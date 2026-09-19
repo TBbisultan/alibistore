@@ -172,6 +172,10 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{
   .hero{height:76vh;}
   .hero-content{padding:32px 22px 30px;}
 }
+@media(max-width:640px){
+  .hero{height:58vh;min-height:420px;}
+  .hero-content{padding:26px 18px 26px;}
+}
 
 /* ============================================================
    SECTION HEADINGS
@@ -185,6 +189,11 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{
 .section-title{font-family:var(--serif);font-size:clamp(26px,3vw,38px);}
 .section-link{font-size:12px;letter-spacing:.06em;color:var(--black);border-bottom:1px solid var(--black);padding-bottom:2px;white-space:nowrap;}
 .section-link:hover{opacity:.55;}
+@media(max-width:640px){
+  .section{padding:48px 0;}
+  .section-tight{padding:32px 0;}
+  .section-head{margin-bottom:22px;}
+}
 
 /* ============================================================
    PRODUCT GRID / CARD
@@ -204,6 +213,9 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{
   background:var(--light-gray);cursor:pointer;
 }
 .card-media img,.ph{width:100%;height:100%;object-fit:cover;transition:transform .8s var(--ease);}
+.ph-img{width:100%;height:100%;object-fit:cover;display:block;}
+/* На странице товара показываем фото целиком, без обрезки — тут это важнее аккуратной сетки */
+.pdp-gallery .ph-img,.modal-media .ph-img{object-fit:contain;}
 .card-media:hover .ph{transform:scale(1.045);}
 .card-tag{
   position:absolute;top:12px;left:12px;z-index:2;
@@ -290,6 +302,10 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{
   .promo-split{grid-template-columns:1fr;}
   .promo-panel{padding:36px 22px;}
 }
+@media(max-width:640px){
+  .promo-media{aspect-ratio:4/3;}
+  .promo-panel{padding:28px 20px;gap:14px;}
+}
 
 /* ============================================================
    ACCESSORIES DARK BLOCK
@@ -303,6 +319,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{
 .acc-block .wish-btn{background:rgba(255,255,255,.12);}
 .acc-block .wish-btn svg{stroke:var(--white);}
 .acc-block .card-tag{background:var(--white);}
+@media(max-width:640px){.acc-block{padding:48px 0;}}
 
 /* ============================================================
    ABOUT
@@ -311,6 +328,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{
 .about .eyebrow{margin-bottom:18px;}
 .about h2{font-family:var(--serif);font-size:clamp(30px,4vw,46px);margin-bottom:22px;}
 .about p{color:var(--gray);font-size:15.5px;line-height:1.75;}
+@media(max-width:640px){.about{padding:56px 0;}}
 
 /* ============================================================
    FOOTER
@@ -328,6 +346,10 @@ footer{border-top:1px solid var(--line);padding:70px 0 34px;}
 .footer-copy{font-size:11.5px;color:var(--gray);}
 @media(max-width:768px){
   .footer-grid{grid-template-columns:repeat(2,1fr);gap:36px 20px;}
+}
+@media(max-width:640px){
+  footer{padding:44px 0 24px;}
+  .footer-grid{margin-bottom:40px;}
 }
 
 /* ============================================================
@@ -396,6 +418,9 @@ footer{border-top:1px solid var(--line);padding:70px 0 34px;}
 .accordion-body p{font-size:13px;color:var(--gray);line-height:1.7;padding-bottom:18px;}
 @media(max-width:768px){
   .pdp-grid{grid-template-columns:1fr;gap:30px;}
+}
+@media(max-width:640px){
+  .pdp{padding:24px 0 60px;}
 }
 
 /* ============================================================
@@ -488,6 +513,7 @@ footer{border-top:1px solid var(--line);padding:70px 0 34px;}
    CHECKOUT / ROUTES
    ============================================================ */
 .route-narrow{max-width:640px;margin:0 auto;padding:60px 0 110px;}
+@media(max-width:640px){.route-narrow{padding:32px 0 64px;}}
 .page-title{font-family:var(--serif);font-size:clamp(26px,3vw,36px);margin-bottom:36px;}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
 .field{display:flex;flex-direction:column;gap:7px;margin-bottom:16px;}
@@ -555,7 +581,7 @@ footer{border-top:1px solid var(--line);padding:70px 0 34px;}
     </button>
     <div class="header-right">
       <button data-route="/wishlist" class="icon-btn" aria-label="Wishlist">
-        <svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-9.5-8.8C.8 7.8 2.5 4 6 4c2 0 3.5 1.1 4.3 2.6C11.1 5.1 12.6 4 14.6 4c3.5 0 5.2 3.8 3.5 7.2C19 15.6 12 20 12 20z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
         <span class="count-badge hide" id="wishCount">0</span>
       </button>
       <button class="icon-btn" id="cartOpenBtn" aria-label="Cart">
@@ -857,7 +883,8 @@ const STATE = {
   orders: JSON.parse(localStorage.getItem('alibi_orders')||'[]'),
   checkoutForm: { deliveryMethod:'courier', payment:'cash' },
   navStack: [],
-  skipStackPush: false
+  skipStackPush: false,
+  scrollPositions: {}
 };
 function saveCart(){ localStorage.setItem('alibi_cart', JSON.stringify(STATE.cart)); updateCounts(); }
 function saveWishlist(){ localStorage.setItem('alibi_wishlist', JSON.stringify(STATE.wishlist)); updateCounts(); }
@@ -879,7 +906,7 @@ function placeholder(product, extraClass){
     // Реальное фото задано в PRODUCT_IMAGES: показываем его.
     // Если ссылка окажется битой — картинка спрячется, и будет виден градиент-заглушка позади неё.
     return `<div class="ph ${extraClass||''}" style="background:${gradStyle};padding:0;">
-      <img src="${imgUrl}" alt="${product.name}" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.style.display='none';">
+      <img class="ph-img" src="${imgUrl}" alt="${product.name}" loading="lazy" onerror="this.style.display='none';">
     </div>`;
   }
   return `<div class="ph ${extraClass||''}" style="background:${gradStyle}" role="img" aria-label="${product.name}"></div>`;
@@ -894,7 +921,7 @@ function productCard(p, cls){
       ${placeholder(p)}
       ${tag}
       <button class="wish-btn ${wished?'active':''}" data-wish="${p.id}" aria-label="${t('addToWishlist')}">
-        <svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-9.5-8.8C.8 7.8 2.5 4 6 4c2 0 3.5 1.1 4.3 2.6C11.1 5.1 12.6 4 14.6 4c3.5 0 5.2 3.8 3.5 7.2C19 15.6 12 20 12 20z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
       </button>
       <button class="qv-btn" data-qv="${p.id}">${t('quickView')}</button>
     </div>
@@ -1044,7 +1071,7 @@ function pageProduct(id){
 
         <button class="btn-primary" id="pdpAddToBag">${t('addToBag')}</button>
         <button class="btn-ghost ${STATE.wishlist.includes(p.id)?'active':''}" id="pdpWishBtn">
-          <svg viewBox="0 0 24 24"><path d="M12 20s-7-4.4-9.5-8.8C.8 7.8 2.5 4 6 4c2 0 3.5 1.1 4.3 2.6C11.1 5.1 12.6 4 14.6 4c3.5 0 5.2 3.8 3.5 7.2C19 15.6 12 20 12 20z"/></svg>
+          <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
           <span>${t('addToWishlist')}</span>
         </button>
 
@@ -1228,17 +1255,34 @@ function renderCartPanel(){
 }
 
 /* ROUTER */
+let lastHash = null;
 function router(){
   const app = document.getElementById('app');
   const hash = location.hash || '#/';
   const parts = hash.replace('#/','').split('/').filter(Boolean);
-  window.scrollTo({top:0,behavior:'instant'});
+
+  // запоминаем, где пользователь был на СТРАНИЦЕ, которую он покидает —
+  // чтобы при возврате назад вернуть его туда же, а не наверх
+  if(lastHash !== null){
+    STATE.scrollPositions[lastHash] = window.scrollY;
+  }
+
   closeAllOverlays();
 
+  // isBack = true, если это переход НАЗАД по истории — через нашу кнопку
+  // "Назад" (goBack) ИЛИ через системную кнопку/жест "назад" браузера
+  let isBack = false;
   if(STATE.skipStackPush){
     STATE.skipStackPush = false;
-  } else if(STATE.navStack[STATE.navStack.length-1] !== hash){
-    STATE.navStack.push(hash);
+    isBack = true;
+  } else {
+    const idx = STATE.navStack.lastIndexOf(hash);
+    if(idx !== -1 && idx < STATE.navStack.length - 1){
+      STATE.navStack.length = idx + 1;
+      isBack = true;
+    } else if(STATE.navStack[STATE.navStack.length-1] !== hash){
+      STATE.navStack.push(hash);
+    }
   }
 
   if(parts.length===0){ app.innerHTML = pageHome(); }
@@ -1253,6 +1297,18 @@ function router(){
   bindPageEvents();
   updateCounts();
   requestAnimationFrame(setupReveal);
+
+  // прокрутка: при обычном переходе — наверх (как на любом сайте);
+  // при переходе назад — туда, где пользователь был на этой странице раньше
+  requestAnimationFrame(()=>{
+    if(isBack && STATE.scrollPositions[hash] !== undefined){
+      window.scrollTo({top:STATE.scrollPositions[hash], behavior:'instant'});
+    } else {
+      window.scrollTo({top:0, behavior:'instant'});
+    }
+  });
+
+  lastHash = hash;
 }
 window.addEventListener('hashchange', router);
 
